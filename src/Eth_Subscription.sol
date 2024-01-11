@@ -19,9 +19,6 @@ contract Eth_Subscription {
     // bytes4(keccak256(bytes("SubscriptionNotPaid()")))
     bytes4 public constant ERROR_SUBSCRIPTION_NOT_PAID = 0x13d08dde;
 
-    address public constant ZERO = address(0);
-    address public constant DEAD = address(0xdead);
-
     // Payment struct
     struct EthPayment {
         address user; // Slot 0
