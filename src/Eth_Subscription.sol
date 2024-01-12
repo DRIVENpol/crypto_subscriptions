@@ -151,7 +151,7 @@ contract Eth_Subscription {
 
     function withdrawFees() external payable onlyOwner {
         assembly {
-            if iszero(call(gas(), sload(shr(64, feeCollector.slot)), callvalue(), 0x00, 0x00, 0x00, 0x00)) {
+            if iszero(call(gas(), shr(64, sload(feeCollector.slot)), selfbalance(), 0x00, 0x00, 0x00, 0x00)) {
                 revert(0, 0)
             }
         }

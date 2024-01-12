@@ -21,6 +21,7 @@ contract Eth_SubscriptionTest is Test {
         );
 
         vm.deal(account, 10 ether);
+        vm.deal(owner, 1 ether);
     }
 
     // Test functions
@@ -91,5 +92,25 @@ contract Eth_SubscriptionTest is Test {
         bool _active = ethSubscription.activeSubscription(account);
 
         assert(success == false && _active == false);
+    }
+
+    function testWithdrawFees() public {
+        vm.startPrank(account);
+
+        ethSubscription.createPayment{value: 1 ether}(1);
+
+        vm.stopPrank();
+
+        vm.startPrank(owner);
+
+        uint256 _before = feeReceiver.balance;
+        // console2.log("feeReceiver.balance: %s", _before);
+
+        ethSubscription.withdrawFees();
+
+        uint256 _after = feeReceiver.balance;
+        // console2.log("feeReceiver.balance: %s", _after);
+
+        assert(_before < _after && _after == 1 ether);
     }
 }
