@@ -1,0 +1,5 @@
+Eth_SubscriptionTest:testPaySubscription() (gas: 68072)
+Eth_SubscriptionTest:testPaySubscriptionAndWait() (gas: 70156)
+Eth_SubscriptionTest:testPaySubscriptionBySendingEth() (gas: 66717)
+Eth_SubscriptionTest:testPaySubscriptionBySendingEth_Err() (gas: 22364)
+Eth_SubscriptionTest:testProlongSubscription() (gas: 78811)
