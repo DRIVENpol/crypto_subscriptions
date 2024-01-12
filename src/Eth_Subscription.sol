@@ -16,9 +16,6 @@ contract Eth_Subscription {
 
     // bytes4(keccak256(bytes("FailedPayment()")))
     bytes4 public constant ERROR_FAILED_PAYMENT = 0x9d5c8847;
-    
-    // bytes4(keccak256(bytes("SubscriptionNotPaid()")))
-    bytes4 public constant ERROR_SUBSCRIPTION_NOT_PAID = 0x13d08dde;
 
     // Payment struct
     struct EthPayment {
@@ -35,7 +32,6 @@ contract Eth_Subscription {
 
     // Errors
     error FailedPayment();
-    error SubscriptionNotPaid();
 
     // Constructor
     constructor(uint64 _ethFee, address _feeCollector, address _owner) {
