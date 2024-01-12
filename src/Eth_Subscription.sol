@@ -9,6 +9,7 @@ contract Eth_Subscription {
 
     // Slot 1
     address private owner;
+    address private pendingOwner;
 
     // keccak256(bytes("PaymentReceived(address,uint64,uint256)"))
     bytes32 public constant PAYMENT_RECEIVED_SIG = 0xef313d75e17f2cc62ca74eb3526393a82cde1ccf1fbfded3a56d8b3a4e00eb33;
@@ -145,8 +146,28 @@ contract Eth_Subscription {
     }
 
     function changeOwner(address _newOwner) external payable onlyOwner {
-        if(_newOwner == address(0) || _newOwner == address(0xdead)) revert();
-        owner = _newOwner;
+        assembly {
+            if eq(_newOwner, 0x00) {
+                revert(0,0)
+            }
+
+            if eq(_newOwner, 0xdead) {
+                revert(0,0)
+            }
+
+            sstore(pendingOwner.slot, _newOwner)
+        }
+    }
+
+    function acceptOwnership() external payable {
+        assembly {
+            if iszero(eq(caller(), sload(pendingOwner.slot))) {
+                revert(0,0)
+            }
+
+            sstore(owner.slot, caller())
+            sstore(pendingOwner.slot, 0x00)
+        }
     }
 
     function withdrawFees() external payable onlyOwner {
@@ -193,5 +214,13 @@ contract Eth_Subscription {
 
     function getFeeCollector() public view returns(address) {
         return feeCollector;
+    }
+
+    function getOwner() public view returns(address) {
+        return owner;
+    }
+
+    function getPendingOwner() public view returns(address) {
+        return pendingOwner;
     }
 }

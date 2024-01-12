@@ -137,4 +137,51 @@ contract Eth_SubscriptionTest is Test {
 
         assert(_feeCollectorBefore != _feeCollectorAfter && _feeCollectorAfter == account);
     }
+
+    function testChangeOwner() public {
+        // No YUL: changeOwner      | 3525 gas
+        // YUL: changeOwner         | 3363 gas
+        vm.startPrank(owner);
+
+        address _ownerBefore = ethSubscription.getOwner();
+
+        ethSubscription.changeOwner(account);
+
+        vm.stopPrank();
+
+        vm.startPrank(account);
+
+        address _pendingBefore = ethSubscription.getPendingOwner();
+
+        ethSubscription.acceptOwnership();
+
+        address _pendingAfter = ethSubscription.getPendingOwner();
+
+        address _ownerAfter = ethSubscription.getOwner();
+
+        assert(_ownerBefore != _ownerAfter && _ownerAfter == account && _pendingBefore == account && _pendingAfter == address(0));
+    }
+
+    function testChangeOwnerFuzz(address _newOwner) public {
+        vm.assume(_newOwner != address(0) && _newOwner != address(0xdead));
+        // No YUL: changeOwner      | 3525 gas
+        // YUL: changeOwner         | 3363 gas
+        vm.startPrank(owner);
+
+        address _ownerBefore = ethSubscription.getOwner();
+
+        ethSubscription.changeOwner(_newOwner);
+
+        address _pendingBefore = ethSubscription.getPendingOwner();
+
+        vm.startPrank(_newOwner);
+
+        ethSubscription.acceptOwnership();
+
+        address _pendingAfter = ethSubscription.getPendingOwner();
+
+        address _ownerAfter = ethSubscription.getOwner();
+
+        assert(_ownerBefore != _ownerAfter && _ownerAfter == _newOwner && _pendingBefore == _newOwner && _pendingAfter == address(0));
+    }
 }
