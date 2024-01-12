@@ -113,4 +113,28 @@ contract Eth_SubscriptionTest is Test {
 
         assert(_before < _after && _after == 1 ether);
     }
+
+    function testChangeFee() public {
+        vm.startPrank(owner);
+
+        uint256 _feeBefore = ethSubscription.getEthFee();
+
+        ethSubscription.changeFee(2 ether);
+
+        uint256 _feeAfter = ethSubscription.getEthFee();
+
+        assert(_feeBefore != _feeAfter && _feeAfter == 2 ether);
+    }
+
+    function testChangeFeeCollector() public {
+        vm.startPrank(owner);
+
+        address _feeCollectorBefore = ethSubscription.getFeeCollector();
+
+        ethSubscription.changeFeeCollector(account);
+
+        address _feeCollectorAfter = ethSubscription.getFeeCollector();
+
+        assert(_feeCollectorBefore != _feeCollectorAfter && _feeCollectorAfter == account);
+    }
 }

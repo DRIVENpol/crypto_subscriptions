@@ -186,4 +186,12 @@ contract Eth_Subscription {
 
         return (payment.user, payment.paymentMoment, payment.paymentExpire);
     }
+
+    function getEthFee() public view returns(uint64) {
+        return ethFee;
+    }
+
+    function getFeeCollector() public view returns(address) {
+        return feeCollector;
+    }
 }
