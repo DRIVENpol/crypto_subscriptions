@@ -174,6 +174,7 @@ contract Eth_SubscriptionTest is Test {
 
         address _pendingBefore = ethSubscription.getPendingOwner();
 
+        vm.stopPrank();
         vm.startPrank(_newOwner);
 
         ethSubscription.acceptOwnership();
